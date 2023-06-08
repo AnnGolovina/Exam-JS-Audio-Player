@@ -1,0 +1,112 @@
+body {
+	margin: 0;
+	padding: 0;
+	background: #1d1231;
+	color: white;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow-x:hidden ;
+}
+
+header {
+	position: sticky;
+	top: 0;
+	padding: 20px;
+	width: 100%;
+	background-color: #2e2551d3;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+
+}
+
+.search-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	min-width: 400px;
+	padding: 1rem 2rem;
+	border-radius: 20px;
+	margin: 10px;
+}
+
+.search-wrapper input {
+	width: 100%;
+	margin: 0 15px;
+	font-size: 20px;
+	border: 1px solid white;
+	border-radius: 20px;
+	outline: none;
+	box-shadow: none;
+	padding: 0 15px;
+	height: 35px;
+	background-color: #dddaf0;
+}
+
+#search-btn, #search-page-btn, #likelist-page-btn {
+	font-size: 20px;
+	border: 1px solid white;
+	border-radius: 30px;
+	padding: 5px;
+	height: 35px;
+	min-width: 100px;
+	margin: auto;
+	text-align: center;
+	background-color: #dddaf0;
+	
+}
+
+.music-output {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.song-elem {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: space-between;
+	width: 200px;
+	height: 350px;
+	border: 1px solid black;
+	margin: 10px;
+	padding: 5px;
+	border-radius: 20px;
+	background: #413571c8;
+
+}
+
+.img-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	margin: 9px auto;
+}
+
+.add-likelist-btn {
+	font-size: 20px;
+	border: 1px solid white;
+	border-radius: 30px;
+	padding: 5px;
+	height: 15px;
+	min-width: 50px;
+	margin: auto;
+	text-align: center;
+	background-color: #dddaf0;
+}
+
+.likelist-output {
+	display: none;
+	justify-content: center;
+	flex-wrap: wrap;
+	width: 100%;
+	margin: 50px auto;
+}
+
+/*.likeListSong {
+	background: #302361c8;
+}*/
