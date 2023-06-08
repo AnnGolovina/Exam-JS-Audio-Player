@@ -111,23 +111,35 @@ class AudioPlayer {
 
       outputElement.innerHTML += `
 	 <div class="song-elem ${ifSongAddedToLikeList ? "likeListSong" : ""}">
+
      <div class="img-wrapper">
        <img src="${cover}">
      </div>
 		
-		<h4>${title}</h4>
-		<span>Author: ${name}</span>
-		<span>Album: ${titleAlbum}</span>
-		<span>&#10030; ${rank}</span>
-		
-       <div>
-      <div>
-      <audio src="${preview}"></audio>
-      </div>
-     <div>
-    <button id="btn-${id}" class="add-likelist-btn">${
-        ifSongAddedToLikeList ? "Delete from likelist" : "Add LikeList"
+    
+	    	<h4>${title}</h4>
+        <div>
+		    <span>Author: ${name}</span>
+		    <span>Album: ${titleAlbum}</span>		
+        </div>
+     <div class="rank-wrapper">
+        <p>&#10030; ${rank}</p>
+     </div>
+        <div>
+           <audio src="${preview}"></audio>
+        </div>
+     
+
+        <div class="button-panel">
+
+        <button></button>
+       <button id="btn-${id}" class="add-likelist-btn">${
+        ifSongAddedToLikeList
+          ? '<img src="assets/like.png" width="20" height="20"/>'
+          : '<img src="assets/unlike.png" width="20" height="20"/>'
       }</button>
+      </div>
+
      </div>
         </div>
 	 </div> 
@@ -161,9 +173,11 @@ class AudioPlayer {
               AudioPlayer.likeListOutput.querySelector(`#${btn.id}`);
 
             if (buttonFromMusicOutput)
-              buttonFromMusicOutput.textContent = "Add LikeList";
+              buttonFromMusicOutput.innerHTML =
+                '<img src="assets/unlike.png" width="20" height="20"/>';
             if (buttonFromLikeListOutput)
-              buttonFromLikeListOutput.textContent = "Add LikeList";
+              buttonFromLikeListOutput.innerHTML =
+                '<img src="assets/unlike.png" width="20" height="20"/>';
           } else {
             this.addLikeList(currentSong);
 
@@ -178,9 +192,11 @@ class AudioPlayer {
               AudioPlayer.likeListOutput.querySelector(`#${btn.id}`);
 
             if (buttonFromMusicOutput)
-              buttonFromMusicOutput.textContent = "Delete from likelist";
+              buttonFromMusicOutput.innerHTML =
+                '<img src="assets/like.png" width="20" height="20"/>';
             if (buttonFromLikeListOutput)
-              buttonFromLikeListOutput.textContent = "Delete from likelist";
+              buttonFromLikeListOutput.innerHTML =
+                '<img src="assets/like.png" width="20" height="20"/>';
           }
         };
       });
