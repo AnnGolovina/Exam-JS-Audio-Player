@@ -13,6 +13,7 @@ class AudioPlayer {
   static likeListBtn = document.querySelector("#likelist-page-btn");
   static likeListOutput = document.querySelector(".likelist-output");
   static musicOutput = document.querySelector(".music-output");
+  static rankBtn = document.querySelector(".rank-btn");
 
   static SECTION = {
     searchList: "searchList",
@@ -28,17 +29,9 @@ class AudioPlayer {
     AudioPlayer.likeListBtn.onclick = () => this.renderLikeList();
     AudioPlayer.searchListBtn.onclick = () => this.renderMusicList();
     AudioPlayer.searchInput.oninput = (e) => this.onInputChange(e);
+    AudioPlayer.rankBtn.onclick = () => this.onRankBtnSort();
+    //AudioPlayer.audioBtn.onclick = () => this.onPlayAudioBtn();
   }
-
-  //turningColorCard() {
-  //  [...document.querySelectorAll(".song-elem")].forEach((el) => {
-  //    if (this.checkLikeList(el.id)) {
-  //      el.style.background = "#302361c8";
-  //    } else {
-  //      el.style.background = "#413571c8";
-  //    }
-  //  });
-  //}
 
   onInputChange(e) {
     if (this.currentSection === AudioPlayer.SECTION.likeList) {
@@ -48,6 +41,21 @@ class AudioPlayer {
       );
 
       this.renderData(filteredSongs, AudioPlayer.likeListOutput, true);
+    }
+  }
+
+  onRankBtnSort() {
+    if (this.currentSection === AudioPlayer.SECTION.likeList) {
+      const songs = this.getLikeListData();
+      const sortSongs = songs.sort((rank1, rank2) => rank2.rank - rank1.rank);
+      this.renderData(sortSongs, AudioPlayer.likeListOutput, true);
+    }
+    if (this.currentSection === AudioPlayer.SECTION.searchList) {
+      this.getDataBySearch(AudioPlayer.SECTION.searchList).then(() => {
+        const songs = this.data;
+        const sortSongs = songs.sort((rank1, rank2) => rank2.rank - rank1.rank);
+        this.renderData(sortSongs, AudioPlayer.musicOutput, true);
+      });
     }
   }
 
@@ -69,6 +77,10 @@ class AudioPlayer {
       console.log(data.data, "!!!!");
 
       this.data = data.data;
+
+      //if (this.data === undefined) {
+      //  alert("Try to write the author again!");
+      //}
     } catch (err) {
       alert("Data is not recognized");
     }
@@ -111,39 +123,30 @@ class AudioPlayer {
 
       outputElement.innerHTML += `
 	 <div class="song-elem ${ifSongAddedToLikeList ? "likeListSong" : ""}">
-
      <div class="img-wrapper">
        <img src="${cover}">
-     </div>
-		
-    
+     </div>    
 	    	<h4>${title}</h4>
-        <div>
-		    <span>Author: ${name}</span>
-		    <span>Album: ${titleAlbum}</span>		
-        </div>
-     <div class="rank-wrapper">
-        <p>&#10030; ${rank}</p>
-     </div>
+           <div>
+		         <span>Author: ${name}</span>
+		         <span>Album: ${titleAlbum}</span>		
+           </div>
+           <div class="rank-wrapper">
+             <p>&#10030; ${rank}</p>
+           </div>
         <div>
            <audio src="${preview}"></audio>
         </div>
-     
-
-        <div class="button-panel">
-
-        <button></button>
-       <button id="btn-${id}" class="add-likelist-btn">${
+           <div class="button-panel">
+              <button id="b-${id}"class="audio-btn"><img src="assets/play.png" width="20" height="20"/></button>
+              <button id="btn-${id}" class="add-likelist-btn">${
         ifSongAddedToLikeList
           ? '<img src="assets/like.png" width="20" height="20"/>'
           : '<img src="assets/unlike.png" width="20" height="20"/>'
       }</button>
-      </div>
-
-     </div>
-        </div>
-	 </div> 
-	  `;
+           </div>
+         </div>
+       `;
 
       const addLikeListBtn =
         this.currentSection === AudioPlayer.SECTION.searchList
@@ -163,8 +166,6 @@ class AudioPlayer {
                 true
               );
 
-            //this.turningColorCard();
-
             btn.textContent = "Add LikeList";
             const buttonFromMusicOutput = AudioPlayer.musicOutput.querySelector(
               `#${btn.id}`
@@ -181,8 +182,6 @@ class AudioPlayer {
           } else {
             this.addLikeList(currentSong);
 
-            //this.turningColorCard();
-
             btn.textContent = "Delete from likelist";
 
             const buttonFromMusicOutput = AudioPlayer.musicOutput.querySelector(
@@ -198,6 +197,32 @@ class AudioPlayer {
               buttonFromLikeListOutput.innerHTML =
                 '<img src="assets/like.png" width="20" height="20"/>';
           }
+        };
+      });
+
+      const audioPlayBtn =
+        this.currentSection === AudioPlayer.SECTION.searchList
+          ? AudioPlayer.musicOutput.querySelectorAll(".audio-btn")
+          : AudioPlayer.likeListOutput.querySelectorAll(".audio-btn");
+
+      //const audio =
+      //  this.currentSection === AudioPlayer.SECTION.searchList
+      //    ? AudioPlayer.musicOutput.querySelectorAll("audio")
+      //    : AudioPlayer.likeListOutput.querySelectorAll("audio");
+
+      [...audioPlayBtn].forEach((btn, i) => {
+        btn.onclick = (e) => {
+          const currentSong = dataToRender[i];
+
+          let audio = new Audio(currentSong.preview);
+          if (audio.paused) {
+            audio.play();
+            btn.innerHTML = `<img src="assets/pause.png" width="20" height="20"/>`;
+          } else {
+            audio.pause();
+            btn.innerHTML = `<img src="assets/play.png" width="20" height="20"/>`;
+          }
+          console.log(audio, "audio");
         };
       });
     });
