@@ -135,10 +135,10 @@ class AudioPlayer {
              <p>&#10030; ${rank}</p>
            </div>
         <div>
-           <audio src="${preview}"></audio>
+           <audio id="aud-${id}" src="${preview}"></audio>
         </div>
            <div class="button-panel">
-              <button id="b-${id}"class="audio-btn"><img src="assets/play.png" width="20" height="20"/></button>
+              <button class="audio-btn"><img src="assets/play.png" width="20" height="20"/></button>
               <button id="btn-${id}" class="add-likelist-btn">${
         ifSongAddedToLikeList
           ? '<img src="assets/like.png" width="20" height="20"/>'
@@ -205,16 +205,11 @@ class AudioPlayer {
           ? AudioPlayer.musicOutput.querySelectorAll(".audio-btn")
           : AudioPlayer.likeListOutput.querySelectorAll(".audio-btn");
 
-      //const audio =
-      //  this.currentSection === AudioPlayer.SECTION.searchList
-      //    ? AudioPlayer.musicOutput.querySelectorAll("audio")
-      //    : AudioPlayer.likeListOutput.querySelectorAll("audio");
-
       [...audioPlayBtn].forEach((btn, i) => {
         btn.onclick = (e) => {
           const currentSong = dataToRender[i];
 
-          let audio = new Audio(currentSong.preview);
+          const audio = document.querySelector(`#aud-${currentSong.id}`);
           if (audio.paused) {
             audio.play();
             btn.innerHTML = `<img src="assets/pause.png" width="20" height="20"/>`;
@@ -222,7 +217,6 @@ class AudioPlayer {
             audio.pause();
             btn.innerHTML = `<img src="assets/play.png" width="20" height="20"/>`;
           }
-          console.log(audio, "audio");
         };
       });
     });
